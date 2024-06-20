@@ -1,12 +1,7 @@
 """
 Analogue Split
---------------
-
-:: Parameters ::
-threshold := defaults to 0; is used to convert similarity matrix into adjacency matrix
-sim_mat := similarity matrix or adjacency matrix if passed with a threshold
-gamma := fraction of molecule from total set of activity pairs within range [0, 1]
 """
+
 
 import random
 import numpy as np
