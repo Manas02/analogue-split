@@ -98,7 +98,7 @@ data = gamma_plot(
     X,
     y,
     simmat,
-    gammas=[i / 10 for i in range(10)],
+    gammas=[i / 10 for i in range(11)],
     cliff_threshold=0.5,
     test_size=0.2,
     random_seed=42,
