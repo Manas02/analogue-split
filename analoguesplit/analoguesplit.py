@@ -201,7 +201,7 @@ def analogue_split(
         )
         logger.critical(
             f"Test set will have {remaining_test_size} more than expected"
-            "number of activity cliff molecules.\nConsider increasing omega."
+            " number of activity cliff molecules.\nConsider increasing omega."
         )
 
         all_without_test_cliff_and_non_cliff = (
