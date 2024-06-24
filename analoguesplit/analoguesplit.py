@@ -319,7 +319,7 @@ def plot_evaluation_results(results: dict, gammas: list[float], title: str) -> N
         axs[idx].set_xticks(gammas)
         axs[idx].tick_params(axis="x", rotation=45)
         axs[idx].set_ylim(0, 1)
-        axs[idx].legend()
+        axs[idx].legend(ncol=2, fontsize="x-small")
         axs[idx].grid(True)
 
     plt.tight_layout(rect=[0, 0, 1, 0.96])
