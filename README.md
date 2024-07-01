@@ -1,55 +1,113 @@
 # Analogue Split
-Chemically Biased Parametric Data Splitting Method
+A Chemically Biased Parametric Data Splitting Method
 
-## Analogues, Activity Cliffs & Molecular Networks
-The analogue split method ensures that a fraction $\gamma$ of the test set molecules 
-are involved in activity cliff edges. Specifically, if the test set contains $N$ molecules, 
-then $int(N \times \gamma)$ molecules will be selected from the activity cliff set. 
-An activity cliff set consists of molecules (nodes in a molecular network) that are connected 
-by an edge (due to their similarity being above a specified threshold) but have different 
-class labels.
+## Overview
 
-However, this requirement may not always be achievable depending on the data set. If 
-$\gamma$ exceeds the maximum possible fraction of such molecules in the test set, the
-code will issue a warning to the user. In this scenario, the remaining molecules in the test
-set will be randomly sampled from the available data points to meet the total required number of 
-$N$ molecules.
+The Analogue Split method is designed to analyze and improve the robustness of machine learning models by considering activity cliffs in molecular datasets. Activity cliffs are pairs of similar molecules with significantly different biological activities, which can challenge the performance of predictive models.
 
-# Gamma Plot Analysis for Activity Cliffs
+This package provides tools to:
 
-This repository implements a method to analyze the performance of a machine learning model as a 
-function of the proportion ($\gamma$) of activity cliffs in the test set. This method is useful 
-for understanding how the presence of activity cliffs in the test set impacts model performance. 
-The resulting analysis is visualized using a gamma plot, where the x-axis represents $\gamma$ 
-(ranging from 0 to 1) and the y-axis represents a chosen performance metric (e.g., precision, recall).
+1. Ensure a specified fraction of the test set molecules are involved in activity cliffs.
+2. Analyze model performance as a function of the proportion of activity cliffs in the test set.
+3. Visualize these analyses through gamma plots.
 
-## Definitions
+## Installation
 
-- **Activity Cliff**: Molecules (nodes in a molecular network) that are connected by an edge (due 
-to similarity above a specified threshold) but have different class labels.
-- **Gamma ($\gamma$)**: A parameter representing the fraction of the test set made up of activity cliffs.
+You can install the package from PyPI using:
+```bash
+pip install analoguesplit
+```
+
+## Usage
+
+### Parameters
+
+- **gamma**: Fraction of the test set comprising of activity cliffs.
+- **omega**: Similarity threshold to create edges between molecules.
+- **test_size**: Fraction of the dataset to be used as the test set.
+- **X**: Feature vector (molecular fingerprints).
+- **y**: Label vector (biological activities).
+
+### API
+
+#### set_random_seed
+Sets a random seed for reproducibility.
+
+```python
+def set_random_seed(seed: int) -> None:
+```
+
+#### calculate_fp
+Calculates molecular fingerprints for a list of molecules.
+
+```python
+def calculate_fp(mols: list[Chem.rdchem.Mol], fp: str = "ecfp4") -> np.ndarray:
+```
+
+#### convert_smiles_to_mol
+Converts a list of SMILES strings to RDKit molecule objects.
+
+```python
+def convert_smiles_to_mol(smis: list[str]) -> list[Chem.rdchem.Mol]:
+```
+
+#### calculate_simmat
+Calculates the similarity matrix for molecular fingerprints using a specified similarity function.
+
+```python
+def calculate_simmat(fps: np.ndarray, similarity_function) -> np.ndarray:
+```
+
+#### tanimoto_similarity
+Calculates the Tanimoto similarity coefficient between two binary vectors.
+
+```python
+def tanimoto_similarity(fp1: np.ndarray, fp2: np.ndarray) -> float:
+```
+
+#### find_activity_cliffs
+Identifies activity cliffs in the dataset.
+
+```python
+def find_activity_cliffs(fps: np.ndarray, labels: np.ndarray, threshold: float) -> list[tuple[int, int]]:
+```
+
+#### analogue_split
+Splits the dataset into training and test sets, ensuring a specified fraction of the test set molecules are activity cliffs.
+
+```python
+def analogue_split(fps: np.ndarray, labels: np.ndarray, test_size: float, gamma: float, omega: float) -> tuple[np.ndarray, np.ndarray]:
+```
+
+#### train_and_evaluate_models
+Trains and evaluates models using the analogue split and returns evaluation results.
+
+```python
+def train_and_evaluate_models(gammas: list[float], fps: np.ndarray, labels: np.ndarray, models: dict, test_size: float, omega: float) -> dict:
+```
+
+#### plot_evaluation_results
+Plots evaluation results for different gamma values.
+
+```python
+def plot_evaluation_results(results: dict, gammas: list[float], title: str) -> None:
+```
 
 ## Methodology
 
-1. **Identify Activity Cliff Molecules**: Determine which molecules in the data set are part of activity 
-cliffs based on their similarity and class labels.
+1. **Identify Activity Cliff Molecules**: Determine which molecules are part of activity cliffs based on their similarity and class labels.
+2. **Generate Test Sets**: For each gamma value, create test sets with the desired proportion of activity cliff molecules.
+3. **Evaluate Model Performance**: Train models on the training set and evaluate them on the test sets, calculating metrics such as accuracy, precision, recall, and F1 score.
+4. **Create Gamma Plot**: Visualize the model performance metrics against gamma values to understand the impact of activity cliffs on model robustness.
 
-2. **Generate Test Sets**: For each $\gamma$ value from 0 to 1:
-    - Calculate the number of activity cliff molecules needed in the test set as 
-    $\text{int}(N \times \gamma)$, where $N$ is the total number of molecules in the test set.
-    - If $\gamma = 0$, the test set will contain no activity cliffs (all activity cliffs are 
-    in the training set).
-    - If $\gamma = 1$ and the number of activity cliff molecules is less than $N$, include all 
-    activity cliff molecules in the test set, and fill the remaining spots by randomly sampling 
-    from the non-activity cliff molecules.
+## Example
 
-3. **Evaluate Model Performance**: For each test set generated with different $\gamma$ values, 
-    train your model on the remaining data (training set) and evaluate it on the test set. Calculate 
-    performance metrics such as precision, recall, etc.
+Please check [Notebook](https://github.com/Manas02/analogue-split/blob/main/notebook/) to learn how to use `analoguesplit`.
 
-4. **Create Gamma Plot**: Plot the performance metrics against $\gamma$ values. The x-axis represents
-    $\gamma$ (ranging from 0 to 1), and the y-axis represents the model performance metric.
+## License
 
-This method aims to provide a systematic way to evaluate how the presence of activity cliffs in the test 
-set impacts model performance. By generating gamma plots, you can gain insights into the robustness 
-and reliability of your model in different scenarios.
+This project is licensed under the MIT License.
+
+## Acknowledgments
+
+This package relies on several excellent Python libraries including RDKit, scikit-learn, NumPy, and Matplotlib.

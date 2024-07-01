@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "analoguesplit"
+version = "0.1.0"
+description = "A Chemically Biased Parametric Data Splitting Method"
+authors = ["Manas Mahale <manas.mahale@bcp.edu.in>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+rdkit = "^2024.3.1"
+numpy = "<2.0.0"
+pandas = "^2.2.2"
+matplotlib = "^3.9.0"
+scikit-learn = "^1.5.0"
+loguru = "^0.7.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

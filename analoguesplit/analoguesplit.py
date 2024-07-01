@@ -5,7 +5,6 @@ Analogue Split
     gamma := Fraction of test set comprising of activity cliffs
     omega := Threshold of Similarity to create edges between molecules
     test_size := Fraction of Dataset to be put in test set
-    train_size := Fraction of Dataset to be put in train set
     X := Feature vector
     y := Label vector
 """
@@ -154,7 +153,12 @@ def find_activity_cliffs(
 
 
 def analogue_split(
-    fps: np.ndarray, labels: np.ndarray, test_size: float, gamma: float, omega: float
+    fps: np.ndarray,
+    labels: np.ndarray,
+    test_size: float,
+    gamma: float,
+    omega: float,
+    random_seed: int,
 ) -> tuple[np.ndarray, np.ndarray]:
     """
     Perform analogue split to create training and test sets with a fraction of test set molecules involved in activity cliffs.
@@ -165,10 +169,14 @@ def analogue_split(
     test_size (float): Fraction of molecules in the test set.
     gamma (float): Fraction of test set molecules to be involved in activity cliffs.
     omega (float): Similarity threshold to consider a pair as an activity cliff.
+    random_seed (int): Seed the RNG
 
     Returns:
     tuple[np.ndarray, np.ndarray]: Indices of training and test set molecules.
     """
+    # Set random seed for reproducibility
+    set_random_seed(random_seed)
+
     activity_cliffs = find_activity_cliffs(fps, labels, omega)
     num_test_size = int(len(fps) * test_size)
     n_cliff_molecules = int(num_test_size * gamma)
@@ -231,6 +239,7 @@ def train_and_evaluate_models(
     models: dict,
     test_size: float,
     omega: float,
+    random_seed: int,
 ) -> dict:
     """
     Train and evaluate models using analogue split and return evaluation results.
@@ -242,6 +251,7 @@ def train_and_evaluate_models(
     models (dict): Dict of Model name as key and model object
     test_size (float): Fraction of molecules in the test set.
     omega (float): Similarity threshold to consider a pair as an activity cliff.
+    random_seed (int): Seed the RNG
 
     Returns:
     dict: Dictionary with key as "gamma_model_name" and value as list of evaluation results.
@@ -253,7 +263,7 @@ def train_and_evaluate_models(
     for gamma in gammas:
         # Perform the analogue split
         train_indices, test_indices = analogue_split(
-            fps, labels, test_size, gamma, omega
+            fps, labels, test_size, gamma, omega, random_seed
         )
 
         # Split the data into training and test sets
@@ -311,11 +321,11 @@ def plot_evaluation_results(results: dict, gammas: list[float], title: str) -> N
 
     for idx, metric in enumerate(metrics):
         for model, values in model_metrics[metric].items():
-            axs[idx].plot(gammas, values, marker="o", label=model)
+            axs[idx].plot(gammas, values, label=model)
 
-        axs[idx].set_title(f"{metric.capitalize()}")
+        axs[idx].set_title(f"{metric}")
         axs[idx].set_xlabel("$\gamma$ (fraction of test set made of activity cliffs)")
-        axs[idx].set_ylabel(metric.capitalize())
+        axs[idx].set_ylabel(metric)
         axs[idx].set_xticks(gammas)
         axs[idx].tick_params(axis="x", rotation=45)
         axs[idx].set_ylim(0, 1)
