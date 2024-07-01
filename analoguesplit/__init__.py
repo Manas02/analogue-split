@@ -4,7 +4,7 @@
 # -------------------------------------------------#
 ####################################################
 
-from analoguesplit.analoguesplit import (
+from .analoguesplit import (
     analogue_split,
     calculate_fp,
     calculate_simmat,
