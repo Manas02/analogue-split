@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "analoguesplit"
-version = "0.1.0"
+version = "0.1.1"
 description = "A Chemically Biased Parametric Data Splitting Method"
 authors = ["Manas Mahale <manas.mahale@bcp.edu.in>"]
 license = "MIT"

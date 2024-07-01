@@ -21,7 +21,7 @@ pip install analoguesplit
 ## Usage
 
 ### Parameters
-
+---
 - **gamma**: Fraction of the test set comprising of activity cliffs.
 - **omega**: Similarity threshold to create edges between molecules.
 - **test_size**: Fraction of the dataset to be used as the test set.
@@ -29,71 +29,71 @@ pip install analoguesplit
 - **y**: Label vector (biological activities).
 
 ### API
-
-#### set_random_seed
+---
+#### `func` set_random_seed
 Sets a random seed for reproducibility.
 
 ```python
 def set_random_seed(seed: int) -> None:
 ```
 
-#### calculate_fp
+#### `func` calculate_fp
 Calculates molecular fingerprints for a list of molecules.
 
 ```python
 def calculate_fp(mols: list[Chem.rdchem.Mol], fp: str = "ecfp4") -> np.ndarray:
 ```
 
-#### convert_smiles_to_mol
+#### `func`  convert_smiles_to_mol
 Converts a list of SMILES strings to RDKit molecule objects.
 
 ```python
 def convert_smiles_to_mol(smis: list[str]) -> list[Chem.rdchem.Mol]:
 ```
 
-#### calculate_simmat
+#### `func` calculate_simmat
 Calculates the similarity matrix for molecular fingerprints using a specified similarity function.
 
 ```python
 def calculate_simmat(fps: np.ndarray, similarity_function) -> np.ndarray:
 ```
 
-#### tanimoto_similarity
+#### `func` tanimoto_similarity
 Calculates the Tanimoto similarity coefficient between two binary vectors.
 
 ```python
 def tanimoto_similarity(fp1: np.ndarray, fp2: np.ndarray) -> float:
 ```
 
-#### find_activity_cliffs
+#### `func` find_activity_cliffs
 Identifies activity cliffs in the dataset.
 
 ```python
 def find_activity_cliffs(fps: np.ndarray, labels: np.ndarray, threshold: float) -> list[tuple[int, int]]:
 ```
 
-#### analogue_split
+#### `func` analogue_split
 Splits the dataset into training and test sets, ensuring a specified fraction of the test set molecules are activity cliffs.
 
 ```python
 def analogue_split(fps: np.ndarray, labels: np.ndarray, test_size: float, gamma: float, omega: float) -> tuple[np.ndarray, np.ndarray]:
 ```
 
-#### train_and_evaluate_models
+#### `func` train_and_evaluate_models
 Trains and evaluates models using the analogue split and returns evaluation results.
 
 ```python
 def train_and_evaluate_models(gammas: list[float], fps: np.ndarray, labels: np.ndarray, models: dict, test_size: float, omega: float) -> dict:
 ```
 
-#### plot_evaluation_results
+#### `func` plot_evaluation_results
 Plots evaluation results for different gamma values.
 
 ```python
 def plot_evaluation_results(results: dict, gammas: list[float], title: str) -> None:
 ```
 
-## Methodology
+## How to use `analoguesplit` ? 
 
 1. **Identify Activity Cliff Molecules**: Determine which molecules are part of activity cliffs based on their similarity and class labels.
 2. **Generate Test Sets**: For each gamma value, create test sets with the desired proportion of activity cliff molecules.
