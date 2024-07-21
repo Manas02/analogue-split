@@ -1,6 +1,8 @@
 # Analogue Split
 A Chemically Biased Parametric Data Splitting Method
 
+![](https://github.com/Manas02/analogue-split/raw/main/banner.png?raw=True)
+
 ## Overview
 
 The Analogue Split method is designed to analyze and improve the robustness of machine learning models by considering activity cliffs in molecular datasets. Activity cliffs are pairs of similar molecules with significantly different biological activities, which can challenge the performance of predictive models.
