@@ -54,8 +54,8 @@ def calculate_fp(mols: list[Chem.rdchem.Mol], fp: str = "ecfp4") -> np.ndarray:
         "ecfp6_chiral": rdFingerprintGenerator.GetMorganGenerator(
             radius=3, includeChirality=True
         ).GetFingerprintAsNumPy,
-        "atom pair": rdFingerprintGenerator.GetAtomPairGenerator().GetFingerprintAsNumPy,
-        "topological torsion": rdFingerprintGenerator.GetTopologicalTorsionGenerator().GetFingerprintAsNumPy,
+        "atom_pair": rdFingerprintGenerator.GetAtomPairGenerator().GetFingerprintAsNumPy,
+        "topological_torsion": rdFingerprintGenerator.GetTopologicalTorsionGenerator().GetFingerprintAsNumPy,
         "rdkit": rdFingerprintGenerator.GetRDKitFPGenerator().GetFingerprintAsNumPy,
     }
 
@@ -169,7 +169,7 @@ def analogue_split(
     test_size (float): Fraction of molecules in the test set.
     gamma (float): Fraction of test set molecules to be involved in activity cliffs.
     omega (float): Similarity threshold to consider a pair as an activity cliff.
-    random_seed (int): Seed the RNG
+    random_seed (int): Seed the PRNG
 
     Returns:
     tuple[np.ndarray, np.ndarray]: Indices of training and test set molecules.
