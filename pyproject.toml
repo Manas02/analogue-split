@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "analoguesplit"
-version = "0.1.2"
+version = "0.1.3"
 description = "A Chemically Biased Parametric Data Splitting Method"
 authors = ["Manas Mahale <manas.mahale@bcp.edu.in>"]
 license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.8"
 rdkit = "^2024.3.1"
 numpy = "^2.1.2"
 pandas = "^2.2.3"
